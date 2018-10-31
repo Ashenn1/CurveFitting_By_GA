@@ -1,55 +1,151 @@
 package curveFitting;
 
 import javafx.util.*;
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.*;
 
 public class curveFitting_sol {
 	
 	final int popSize = 30;
 
-	String [] Chromos = new String[popSize]; //The population
-	
-	
 	int numIterations = 500;
-	int numItems ;
-	List<Pair<String,Integer>> chromeFitness = new ArrayList<>(popSize);
-	List <String> nextGen = new ArrayList<>(); //place to store the next generation.
+	int numPoints;
+	int numTestcases;
+	int degreeOfPoly;
 	
-	Pair<String,Integer> bestFitness = new Pair<String, Integer>("", 2); // to carry best fitness seen until now.
+	List<Pair<Float,Float>>point = new ArrayList<>(numPoints);
+	List<Chromosome> Generation = new ArrayList<>(popSize); //each chromosome has list of genes and fitness.
 	
 	
-	
+	void readFile(String filepath) {
+		String[] values;
+		Pair<Float,Float>xyPoints;
+		try {
+			
+			FileReader filereader=new FileReader(filepath);
+			BufferedReader in= new BufferedReader(filereader);
+			String line;
+			int cnt=0;
+			while((line=in.readLine())!= null) {
+				    values=line.split("\\s+");
+				    
+				 
+				    if(cnt==0) {
+				    	numTestcases=Integer.parseInt(values[0]);
+				    }
+				    
+				    else if(cnt==1) {
+				    	numPoints=Integer.parseInt(values[0]);
+				    	degreeOfPoly=Integer.parseInt(values[1]);
+				    }
+				    else {
+				        xyPoints = new Pair<>(Float.parseFloat(values[0]), Float.parseFloat(values[1]));
+				        point.add(xyPoints);
+				    }
+				    
+				    
+				    cnt++;
+				
+			}
+			
+			
+			
+			
+		} catch (FileNotFoundException e) {
+			System.out.println("File is not found.");
+			e.printStackTrace();
+		} catch (IOException e) {
+			System.out.println("Problem with input/output.");
+			e.printStackTrace();
+		}
+		
+		
+		
+	}
 	
 	
 	
 	void GeneratingPopulation() {
+		/*generating random numbers by multiplying an integer with a float 
+		  3ashan msh la2yeen function to generate random float numbers with a range*/
 		Random r = new Random();
-		String ch;
+		float random;
+		int in;
+		float f;	
+		Chromosome ch = null;
+		List <Float> dummy = new ArrayList<>(degreeOfPoly + 1);
+		
+		for(int i = 0; i < popSize; i++) {
+			for(int j = 0; j <= degreeOfPoly; j++) {
+				
+				in = r.nextInt(10 + 1 - -10) + -10;
+				f = r.nextFloat();
+				random = in * f;
+				dummy.add(random);
+			}
+			ch = new Chromosome((float) 0.0, dummy);
+			Generation.add(i, ch);
+			System.out.println(Generation.get(i).getGenes());
+			System.out.println("--------------------------------------------");
+			dummy.clear();
+			
+		}
 		
 		
 		
 		
 	}
 	
-	boolean Valid(String chrome) { //example-->(1111) weight=150 kg & knapsack only takes 100 kg,so it isn't valid
-		
-			return false;
-		
-	}
 	
-	 void fitness() { //depending on the benefit only until now.
+	
+	 void fitness() { 
+		 
+		Float error= (float) 0.0;
+		Float sum = (float) 0.0;
+		Float sum2=(float) 0.0;
 		
+		for(int z = 0; z < popSize; z++) {
+			
+			for(int i = 0; i<numPoints;i++) {
+				 
+				 Float yCalc=(float) 0.0;
+				 float x = point.get(i).getKey();
+				 for(int j = 0; j<=degreeOfPoly;j++) {
 		 
+					 yCalc= (float) (yCalc + (Generation.get(z).getGenes().get(j))* (Math.pow(x ,j)  )); //had to recast it again to float.
+					 
+				 }
+				 sum+=(yCalc) - (point.get(i).getValue()); //yCalc-yActual
+				 
+				 sum2=(float) Math.pow(sum , 2); // (yCalc-yActual)^2
+				
+				 
+			 }
+			float val =1/(float)numPoints;
+			
+			error= (val*sum2);
+			Generation.get(z).setFitness((float)error);
+			System.out.println(Generation.get(z).getGenes());
+			System.out.println("Fitness equals = " + Generation.get(z).getFitness());
+			System.out.println("--------------------------------------------");
+		}
 		 
+		
+		
 		
 		
 	}
 	 
 	 void Sort(){ //sorting fitness by minimum
 		 
-		 chromeFitness.sort(new Comparator<Pair<String, Integer>>(){
+		 /*
+		 chromeFitness.sort(new Comparator<Pair<Float, Float>>(){
 			 @Override
-			 public int compare(Pair<String, Integer> v1 ,Pair<String, Integer> v2) {
+			 public int compare(Pair<Float, Float> v1 ,Pair<Float, Float> v2) {
 				 
 				 if (v1.getValue() < v2.getValue()) {
 		                return -1;
@@ -62,6 +158,8 @@ public class curveFitting_sol {
 			 }
 		 });
 		 
+		 */
+		 
 		 
 	 }
 	 
@@ -73,7 +171,7 @@ public class curveFitting_sol {
 	
 	 void crossOver () {
 		 Random r = new Random();
-		 int randNum = r.nextInt(numItems - 1); //lw 0 htb2a el crossover point b3d el 0 w  lw 1 el cp b3d el 1 l7d el numItems-2
+		 int randNum = r.nextInt(degreeOfPoly ); //lw 0 htb2a el crossover point b3d el 0 w  lw 1 el cp b3d el 1 l7d el numItems-2
 		 randNum+=1;
 	
 
@@ -110,8 +208,8 @@ public class curveFitting_sol {
 				//System.out.println("After mutation: "+nextGen);
 				
 				
-				nextGen.clear();
-				chromeFitness.clear();
+				//nextGen.clear();
+				//chromeFitness.clear();
 				
 				
 			}
