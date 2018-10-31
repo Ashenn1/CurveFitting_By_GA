@@ -2,10 +2,9 @@ package curveFitting;
 
 import javafx.util.*;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+
+import java.io.*;
+
 import java.util.*;
 
 public class curveFitting_sol {
@@ -15,10 +14,11 @@ public class curveFitting_sol {
 	int numIterations = 500;
 	int numPoints;
 	int numTestcases;
+
 	int degreeOfPoly;
 	
 	List<Pair<Float,Float>>point = new ArrayList<>(numPoints);
-	List<Chromosome> Generation = new ArrayList<>(popSize); //each chromosome has list of genes and fitness.
+	List<Chromosome> Generation = new ArrayList<>(popSize); //place to store next generation.
 	
 	
 	void readFile(String filepath) {
@@ -66,8 +66,10 @@ public class curveFitting_sol {
 		
 		
 	}
+
 	
 	
+	 
 	
 	void GeneratingPopulation() {
 		/*generating random numbers by multiplying an integer with a float 
@@ -81,13 +83,16 @@ public class curveFitting_sol {
 		
 		for(int i = 0; i < popSize; i++) {
 			for(int j = 0; j <= degreeOfPoly; j++) {
-				
+
+				//dummy = new ArrayList<>(degreeOfPoly + 1);
 				in = r.nextInt(10 + 1 - -10) + -10;
 				f = r.nextFloat();
 				random = in * f;
 				dummy.add(random);
 			}
+
 			ch = new Chromosome((float) 0.0, dummy);
+
 			Generation.add(i, ch);
 			System.out.println(Generation.get(i).getGenes());
 			System.out.println("--------------------------------------------");
@@ -100,13 +105,18 @@ public class curveFitting_sol {
 		
 	}
 	
+
 	
 	
-	 void fitness() { 
+
 		 
-		Float error= (float) 0.0;
-		Float sum = (float) 0.0;
-		Float sum2=(float) 0.0;
+		
+
+	
+	 void fitness() { //depending on the benefit only until now.
+		    Float error= (float) 0.0;
+			Float sum = (float) 0.0;
+			Float sum2=(float) 0.0;
 		
 		for(int z = 0; z < popSize; z++) {
 			
@@ -142,24 +152,21 @@ public class curveFitting_sol {
 	 
 	 void Sort(){ //sorting fitness by minimum
 		 
-		 /*
-		 chromeFitness.sort(new Comparator<Pair<Float, Float>>(){
-			 @Override
-			 public int compare(Pair<Float, Float> v1 ,Pair<Float, Float> v2) {
-				 
-				 if (v1.getValue() < v2.getValue()) {
-		                return -1;
-		            } else if (v1.getValue().equals(v2.getValue())) {
-		                return 0; 
-		                
-		            } else {
-		                return 1;
-		            }
-			 }
-		 });
-		 
-		 */
-		 
+		 //chromeFitness.sort(new Comparator<Pair<String, Integer>>(){
+//			 @Override
+//			 public int compare(Pair<String, Integer> v1 ,Pair<String, Integer> v2) {
+//				 
+//				 if (v1.getValue() < v2.getValue()) {
+//		                return -1;
+//		            } else if (v1.getValue().equals(v2.getValue())) {
+//		                return 0; 
+//		                
+//		            } else {
+//		                return 1;
+//		            }
+//			 }
+//		 });
+
 		 
 	 }
 	 
@@ -171,8 +178,10 @@ public class curveFitting_sol {
 	
 	 void crossOver () {
 		 Random r = new Random();
+
 		 int randNum = r.nextInt(degreeOfPoly ); //lw 0 htb2a el crossover point b3d el 0 w  lw 1 el cp b3d el 1 l7d el numItems-2
 		 randNum+=1;
+		 
 	
 
 	 }
@@ -208,10 +217,7 @@ public class curveFitting_sol {
 				//System.out.println("After mutation: "+nextGen);
 				
 				
-				//nextGen.clear();
-				//chromeFitness.clear();
-				
-				
+
 			}
 			
 	 }

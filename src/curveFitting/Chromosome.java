@@ -5,6 +5,7 @@ import java.util.List;
 
 public class Chromosome {
 
+
 	private Float fitness;
 	
 	private List<Float>Genes = new ArrayList<>();
@@ -36,11 +37,12 @@ public class Chromosome {
 		Genes = genes;
 	}
 	
-	
-	
-	
-	
-	
-	
-	
 }
+	
+	
+	
+	
+	
+	
+	
+
