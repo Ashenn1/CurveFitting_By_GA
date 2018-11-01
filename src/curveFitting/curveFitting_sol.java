@@ -19,8 +19,7 @@ public class curveFitting_sol {
 	
 	List<Pair<Float,Float>>point = new ArrayList<>(numPoints);
 	List<Chromosome> Generation = new ArrayList<>(popSize); //place to store next generation.
-	
-	
+
 	void readFile(String filepath) {
 		String[] values;
 		Pair<Float,Float>xyPoints;
@@ -104,7 +103,7 @@ public class curveFitting_sol {
 		
 		
 	}
-	
+
 	 void fitness() { //depending on the benefit only until now.
 		    Float error= (float) 0.0;
 			Float sum = (float) 0.0;
