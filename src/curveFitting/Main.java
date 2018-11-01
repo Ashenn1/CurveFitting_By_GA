@@ -14,7 +14,11 @@ public class Main {
 		sol.GeneratingPopulation();
 		sol.fitness();
 		
+		sol.Sort();
+	
+		
+	}
+		
 
 	}
 
-}

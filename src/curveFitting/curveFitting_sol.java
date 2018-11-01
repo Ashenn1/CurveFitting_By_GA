@@ -152,20 +152,20 @@ public class curveFitting_sol {
 	 
 	 void Sort(){ //sorting fitness by minimum
 		 
-		 //chromeFitness.sort(new Comparator<Pair<String, Integer>>(){
-//			 @Override
-//			 public int compare(Pair<String, Integer> v1 ,Pair<String, Integer> v2) {
-//				 
-//				 if (v1.getValue() < v2.getValue()) {
-//		                return -1;
-//		            } else if (v1.getValue().equals(v2.getValue())) {
-//		                return 0; 
-//		                
-//		            } else {
-//		                return 1;
-//		            }
-//			 }
-//		 });
+		 Generation.sort(new Comparator<Chromosome>(){
+		 @Override
+			 public int compare(Chromosome v1 ,Chromosome v2) {
+				 
+				 if (v1.getFitness() < v2.getFitness()) {
+		                return -1;
+		            } else if (v1.getFitness().equals(v2.getFitness())) {
+		                return 0; 
+		                
+		            } else {
+		                return 1;
+		            }
+			 }
+		 });
 
 		 
 	 }
