@@ -4,26 +4,45 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Chromosome {
-	private float fitness;
-	private List <Float> Genes = new ArrayList<>();
+
+
+	private Float fitness;
 	
-	public Chromosome(float fitness, List<Float> genes) {
+	private List<Float>Genes = new ArrayList<>();
+
+
+
+	public Chromosome(Float fitness, List<Float>Genes) {
 		super();
 		this.fitness = fitness;
-		Genes = genes;
+		for(int i=0;i<Genes.size();i++) //copying by values not by address.
+		{
+			this.Genes.add(i, Genes.get(i));
+		}
 	}
 
-	public float getFitness() {
+	public Float getFitness() {
 		return fitness;
 	}
-	public void setFitness(float fitness) {
+
+	public void setFitness(Float fitness) {
 		this.fitness = fitness;
 	}
+
 	public List<Float> getGenes() {
 		return Genes;
 	}
+
 	public void setGenes(List<Float> genes) {
 		Genes = genes;
 	}
-
+	
 }
+	
+	
+	
+	
+	
+	
+	
+

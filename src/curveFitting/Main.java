@@ -5,14 +5,20 @@ import java.util.*;
 public class Main {
 
 	public static void main(String[] args) {
-//		Random r = new Random();
-//		int i = r.nextInt(10 + 1 - -10) + -10;
-//		double f = r.nextDouble();
-//		
-//		System.out.println(f * i);
+
+		curveFitting_sol sol= new curveFitting_sol();
 		
-		curveFitting_sol sol = new curveFitting_sol();
+		String filepath="C:\\Users\\Soha Samad\\Desktop\\College\\Year 4\\Soft_Computing\\Tasks\\Assignment2-Curve Fitting\\CurveFitting_By_GA\\input.txt";
+		sol.readFile(filepath);
+
 		sol.GeneratingPopulation();
+		sol.fitness();
+		
+		sol.Sort();
+	
+		
+	}
+		
+
 	}
 
-}
