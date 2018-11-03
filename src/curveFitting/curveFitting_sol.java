@@ -11,7 +11,7 @@ public class curveFitting_sol {
 	
 	final int popSize = 48; //to be able to cut it into even halves.
 
-	int numIterations = 500;
+	int numIterations = 300;
 	int numPoints;
 	int numTestcases;
 
@@ -21,6 +21,8 @@ public class curveFitting_sol {
 	List<Chromosome> Generation = new ArrayList<>(popSize); //place to store next generation.
 
 	List<Chromosome>nextGen = new ArrayList<>(popSize);
+	
+	Chromosome bestFitness = new Chromosome();
 	
 	
 
@@ -97,8 +99,13 @@ public class curveFitting_sol {
 			ch = new Chromosome((float) 0.0, dummy);
 
 			Generation.add(i, ch);
+			
+			/*
 			System.out.println(Generation.get(i).getGenes());
 			System.out.println("--------------------------------------------");
+			System.out.println("After creating a new generation");
+			
+			*/
 			dummy.clear();
 			
 		}
@@ -136,9 +143,13 @@ public class curveFitting_sol {
 			
 			error= (val*sum2);
 			Generation.get(z).setFitness((float)error);
+			
+			/*
 			System.out.println(Generation.get(z).getGenes());
 			System.out.println("Fitness equals = " + Generation.get(z).getFitness());
 			System.out.println("--------------------------------------------");
+			
+			*/
 		}
 		 
 		
@@ -147,7 +158,7 @@ public class curveFitting_sol {
 		
 	}
 	 
-	 void Sort(){ //sorting fitness by minimum
+	 void Sort(){ //sorting fitness by minimum , & getting the best fitness.
 		 
 		 Generation.sort(new Comparator<Chromosome>(){
 		 @Override
@@ -164,6 +175,17 @@ public class curveFitting_sol {
 			 }
 		 });
 
+		 //best fitness is zero.
+		 for(int i=0;i<popSize;i++) {
+			 if(bestFitness.getFitness() > Generation.get(i).getFitness()) {
+				 
+				 bestFitness.setGenes(Generation.get(i).getGenes());
+				 bestFitness.setFitness(Generation.get(i).getFitness());
+			 }
+			
+			 
+		 }
+		 
 		 
 	 }
 	 
@@ -204,6 +226,7 @@ public class curveFitting_sol {
 			 nextGen.add( Generation.get(i));
 		 }
 		 
+		 /*
 		 System.out.println("Crossover point is : "+ randNum);
 		 System.out.println("New Generation after crossover : ");
 		 for(int i=0;i<popSize;i++) {
@@ -211,7 +234,7 @@ public class curveFitting_sol {
 				System.out.println("--------------------------------------------");
 		 }
 		 
-	
+	*/
 
 	 }
 	 
@@ -225,16 +248,19 @@ public class curveFitting_sol {
 				 
 				    Random r = new Random();
 					float x = r.nextFloat(); 
-					float p;
+					float p=0;
 					float newVal = 0;
 					
 					if(x<=0.1) { //probability of the gene to get mutated 10%.
 						
 						float r1= r.nextFloat();
+						float r2;
 						if(r1<=0.5) { //Y = LowerBound if r1<=0.5 (newVal = oldVal - equation)
 							
 						    p = (1-generationNum)/numIterations; //(1-t)/T
 						    p = (float) Math.pow(p, 1.23); // ((1-t)/T)^d --> dependency factor ~ 1..5
+						    r2=r.nextFloat();
+						    p=(float) Math.pow(r2, p);
 						    p= 1- p ;
 						    newVal = nextGen.get(i).getGenes().get(j) - p ;
 						    nextGen.get(i).getGenes().set(j, newVal);
@@ -244,6 +270,8 @@ public class curveFitting_sol {
 							
 							p = (1-generationNum)/numIterations; //(1-t)/T
 						    p = (float) Math.pow(p, 1.23); // ((1-t)/T)^d --> dependency factor ~ 1..5
+						    r2=r.nextFloat();
+						    p=(float) Math.pow(r2, p);
 						    p= 1- p ;
 						    newVal = nextGen.get(i).getGenes().get(j) + p ;
 						    nextGen.get(i).getGenes().set(j, newVal);
@@ -265,13 +293,15 @@ public class curveFitting_sol {
 			  }
 		  }
 	
+		  /*
 		  System.out.println("New Generation after mutation : ------------------------------------");
 			 for(int i=0;i<popSize;i++) {
 				 System.out.println(Generation.get(i).getGenes());
+				 System.out.println("Fitness equals = " + Generation.get(i).getFitness());
 					System.out.println("--------------------------------------------");
 			 }
 		  
-			
+		*/
 			
 		}
 	 
@@ -285,7 +315,8 @@ public class curveFitting_sol {
 			{	
 				fitness();
 				//System.out.println("their fitness : ");
-				//System.out.println(getChromeFitness());
+				
+		
 				
 				selection();
 				//System.out.println("The Selected: "+ nextGen);
@@ -308,6 +339,13 @@ public class curveFitting_sol {
 	 
 	 public void Output() {
 		 
+		 System.out.println("Coeficients: ");
+		 for(int i=0; i<=degreeOfPoly; i++) {
+			 
+			System.out.print( bestFitness.getGenes().get(i)+ " ");
+		 }
+		 System.out.println("");
+		 System.out.println("It's Fitness: " + bestFitness.getFitness());
 		 
 		 
 	 }

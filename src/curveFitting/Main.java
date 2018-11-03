@@ -12,12 +12,9 @@ public class Main {
 		sol.readFile(filepath);
 
 		sol.GeneratingPopulation();
-		sol.fitness();
-		
-		sol.Sort();
-		sol.selection();
-		sol.crossOver();
-		sol.mutation(2);
+		//sol.mutation(30);
+		sol.go();
+		sol.Output();
 	
 		
 	}

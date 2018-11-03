@@ -6,11 +6,13 @@ import java.util.List;
 public class Chromosome {
 
 
-	private Float fitness;
+	private Float fitness = (float)10000000.0; //worst fitness.
 	
 	private List<Float>Genes = new ArrayList<>();
 
-
+	public Chromosome() {
+		
+	}
 
 	public Chromosome(Float fitness, List<Float>Genes) {
 		super();
@@ -34,7 +36,12 @@ public class Chromosome {
 	}
 
 	public void setGenes(List<Float> genes) {
-		Genes = genes;
+		Genes.clear();
+		for(int i=0;i<genes.size();i++) //copying by values not by address.
+		{
+			this.Genes.add(i, genes.get(i));
+		}
+		
 	}
 	
 }
