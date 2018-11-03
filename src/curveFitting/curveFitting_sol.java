@@ -9,7 +9,7 @@ import java.util.*;
 
 public class curveFitting_sol {
 	
-	final int popSize = 30;
+	final int popSize = 48; //to be able to cut it into even halves.
 
 	int numIterations = 500;
 	int numPoints;
@@ -19,6 +19,7 @@ public class curveFitting_sol {
 	
 	List<Pair<Float,Float>>point = new ArrayList<>(numPoints);
 	List<Chromosome> Generation = new ArrayList<>(popSize); //place to store next generation.
+	List<Chromosome>nextGen = new ArrayList<>(popSize);
 	
 	
 	void readFile(String filepath) {
@@ -110,28 +111,27 @@ public class curveFitting_sol {
 	
 
 		 
-		
-
 	
 	 void fitness() { //depending on the benefit only until now.
-		    Float error= (float) 0.0;
-			Float sum = (float) 0.0;
-			Float sum2=(float) 0.0;
+		    float error= 0;
+			float sum = 0;
+			float sum2= 0;
 		
 		for(int z = 0; z < popSize; z++) {
 			
 			for(int i = 0; i<numPoints;i++) {
 				 
-				 Float yCalc=(float) 0.0;
+				 float yCalc= 0;
 				 float x = point.get(i).getKey();
-				 for(int j = 0; j<=degreeOfPoly;j++) {
+				 
+				 for(int j = 0; j<=degreeOfPoly;j++) { // calculates yCal only.
 		 
 					 yCalc= (float) (yCalc + (Generation.get(z).getGenes().get(j))* (Math.pow(x ,j)  )); //had to recast it again to float.
 					 
 				 }
-				 sum+=(yCalc) - (point.get(i).getValue()); //yCalc-yActual
+				 sum=(yCalc) - (point.get(i).getValue()); //yCalc-yActual
 				 
-				 sum2=(float) Math.pow(sum , 2); // (yCalc-yActual)^2
+				 sum2+=(float) Math.pow(sum , 2); // (yCalc-yActual)^2
 				
 				 
 			 }
@@ -173,24 +173,107 @@ public class curveFitting_sol {
 	 
 	 void selection() { //sort by the best fitness 
          
+		 Sort();
+		 //Selecting the best half of the old generation.
+		 for(int i=0;i<(popSize/2);i++) {
+			 nextGen.add(i, Generation.get(i));
+		 }
+		 
+		 
 	 }
 	 
+	 
+	 
 	
-	 void crossOver () {
-		 Random r = new Random();
+	 void crossOver () {  //crossing over the selected and adding the other (best) half from the old gen.
+		 Random r = new Random(); //we could try other selection and crossover mechanisms.
 
-		 int randNum = r.nextInt(degreeOfPoly ); //lw 0 htb2a el crossover point b3d el 0 w  lw 1 el cp b3d el 1 l7d el numItems-2
-		 randNum+=1;
+		 int randNum = r.nextInt(degreeOfPoly); //lw 0 htb2a el crossover point b3d el 0 w  lw 1 el cp b3d el 1 l7d el numItems-2
+		 randNum+=1; //bec we want 0 to be excluded.
+		 
+		 for(int i=0;i<nextGen.size();i+=2) {
+			 
+			 int cnt=randNum;
+			 while(cnt<=degreeOfPoly) { //swapping values.
+				 Float temp = nextGen.get(i).getGenes().get(cnt);
+				 nextGen.get(i).getGenes().set(cnt, nextGen.get(i+1).getGenes().get(cnt) );
+				 nextGen.get(i+1).getGenes().set(cnt, temp);
+				 
+				 cnt++;
+			 }
+		 }
+		 
+		 for(int i=0;i<(popSize/2);i++) { //adding the best first half from the old generation.
+			 nextGen.add( Generation.get(i));
+		 }
+		 
+		 System.out.println("Crossover point is : "+ randNum);
+		 System.out.println("New Generation after crossover : ");
+		 for(int i=0;i<popSize;i++) {
+			 System.out.println(nextGen.get(i).getGenes());
+				System.out.println("--------------------------------------------");
+		 }
 		 
 	
 
 	 }
 	 
-	 void mutation ()
+	 void mutation (int generationNum)
 		{
 			 
-			
-			
+		 for(int i=0;i<(nextGen.size()/2); i++) //mutation over the selected only.
+		 {
+			 
+			 for(int j=0 ;j<=degreeOfPoly;j++) { //for loop for the genes inside each chromosome.
+				 
+				    Random r = new Random();
+					float x = r.nextFloat(); 
+					float p;
+					float newVal = 0;
+					
+					if(x<=0.1) { //probability of the gene to get mutated 10%.
+						
+						float r1= r.nextFloat();
+						if(r1<=0.5) { //Y = LowerBound if r1<=0.5 (newVal = oldVal - equation)
+							
+						    p = (1-generationNum)/numIterations; //(1-t)/T
+						    p = (float) Math.pow(p, 1.23); // ((1-t)/T)^d --> dependency factor ~ 1..5
+						    p= 1- p ;
+						    newVal = nextGen.get(i).getGenes().get(j) - p ;
+						    nextGen.get(i).getGenes().set(j, newVal);
+						}
+						
+						else { //Y = UpperBound if r1>0.5 (newVal = oldVal + equation)
+							
+							p = (1-generationNum)/numIterations; //(1-t)/T
+						    p = (float) Math.pow(p, 1.23); // ((1-t)/T)^d --> dependency factor ~ 1..5
+						    p= 1- p ;
+						    newVal = nextGen.get(i).getGenes().get(j) + p ;
+						    nextGen.get(i).getGenes().set(j, newVal);
+						}
+						
+					}
+				 
+					
+					
+			 }
+			 
+			 
+			 }
+		 
+	      //making the new generation the old generation now.
+		  for(int i=0; i<popSize;i++ ) {
+			  for(int j=0; j<=degreeOfPoly;j++) {
+				  Generation.get(i).getGenes().set(j, nextGen.get(i).getGenes().get(j));  
+			  }
+		  }
+	
+		  System.out.println("New Generation after mutation : ------------------------------------");
+			 for(int i=0;i<popSize;i++) {
+				 System.out.println(Generation.get(i).getGenes());
+					System.out.println("--------------------------------------------");
+			 }
+		  
 			
 			
 		}
@@ -213,17 +296,22 @@ public class curveFitting_sol {
 				crossOver();
 				//System.out.println("After crossover: "+nextGen);
 				
-				mutation();
+				mutation(numIterations);
 				//System.out.println("After mutation: "+nextGen);
 				
 				
 
 			}
 			
+			Generation.clear();
+			nextGen.clear();
+			
 	 }
 	 
 	 
 	 public void Output() {
+		 
+		 
 		 
 	 }
 	

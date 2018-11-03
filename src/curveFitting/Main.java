@@ -15,6 +15,9 @@ public class Main {
 		sol.fitness();
 		
 		sol.Sort();
+		sol.selection();
+		sol.crossOver();
+		sol.mutation(2);
 	
 		
 	}
