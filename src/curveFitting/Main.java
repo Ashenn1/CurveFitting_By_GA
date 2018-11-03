@@ -8,7 +8,7 @@ public class Main {
 
 		curveFitting_sol sol= new curveFitting_sol();
 		
-		String filepath="C:\\Users\\Soha Samad\\Desktop\\College\\Year 4\\Soft_Computing\\Tasks\\Assignment2-Curve Fitting\\CurveFitting_By_GA\\input.txt";
+		String filepath="M:\\fci\\semester 7\\Soft Computing\\Assignments\\CurveFitting_By_GA\\input.txt";
 		sol.readFile(filepath);
 
 		sol.GeneratingPopulation();
