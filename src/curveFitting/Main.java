@@ -11,10 +11,15 @@ public class Main {
 		String filepath="C:\\Users\\Soha Samad\\Desktop\\College\\Year 4\\Soft_Computing\\Tasks\\Assignment2-Curve Fitting\\CurveFitting_By_GA\\input.txt";
 		sol.readFile(filepath);
 
-		sol.GeneratingPopulation();
+		
 		//sol.mutation(30);
-		sol.go();
-		sol.Output();
+		for(int i=1; i<=sol.numTestcases;i++) {
+			System.out.println("Test Case "+ i);
+			sol.go();
+			System.out.println("---------------------------------------------");
+			
+		}
+		
 	
 		
 	}

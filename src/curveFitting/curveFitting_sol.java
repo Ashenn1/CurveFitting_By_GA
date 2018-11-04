@@ -11,7 +11,7 @@ public class curveFitting_sol {
 	
 	final int popSize = 48; //to be able to cut it into even halves.
 
-	int numIterations = 300;
+	int numIterations = 3000;
 	int numPoints;
 	int numTestcases;
 
@@ -310,6 +310,7 @@ public class curveFitting_sol {
 	 void go()
 	 {
 		 
+		    GeneratingPopulation();
 			
 			for(int i = 0;i< numIterations ;i++)
 			{	
@@ -330,10 +331,15 @@ public class curveFitting_sol {
 				
 
 			}
+			Output();
+			Clear();
 			
-			Generation.clear();
-			nextGen.clear();
-			
+	 }
+	 
+	 public void Clear() {
+		 Generation.clear();
+		 nextGen.clear();
+		 bestFitness = new Chromosome();
 	 }
 	 
 	 
@@ -349,5 +355,6 @@ public class curveFitting_sol {
 		 
 		 
 	 }
+	 
 	
 }
