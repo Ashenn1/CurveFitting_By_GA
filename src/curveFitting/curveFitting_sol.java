@@ -262,11 +262,13 @@ public class curveFitting_sol {
 
 	 void go(FileWriter fileWriter , BufferedWriter bufferedWriter)
 	 {
-		 
+		    boolean flagStill= true;
 		    GeneratingPopulation();
 			
-			for(int i = 0;i< numIterations ;i++)
+			for(int i = 0; ( i< numIterations ) && flagStill ;i++)
 			{	
+				
+				
 				fitness();
 
 				//System.out.println("their fitness : ");
@@ -279,6 +281,9 @@ public class curveFitting_sol {
 				
 			 mutation(numIterations);
 				//System.out.println("After mutation: "+nextGen);
+			 
+			 if(bestFitness.getFitness().equals(0)) // if it ever reaches 0 just get out.
+					flagStill =false;
 
 			}
 			
