@@ -8,7 +8,7 @@ public class curveFitting_sol {
 	
 	final int popSize = 48; //to be able to cut it into even halves.
 
-	int numIterations = 3000;
+	int numIterations = 2000;
 	int numPoints;
 	int numTestcases;
 
@@ -98,7 +98,7 @@ public class curveFitting_sol {
 	}
 
 
-	 void fitness() { //depending on the benefit only until now.
+	 void fitness() { 
 		float error = 0;
 		float sum = 0;
 		float sum2 = 0;
@@ -260,7 +260,7 @@ public class curveFitting_sol {
 	 }
 	 
 
-	 void go()
+	 void go(FileWriter fileWriter , BufferedWriter bufferedWriter)
 	 {
 		 
 		    GeneratingPopulation();
@@ -281,7 +281,16 @@ public class curveFitting_sol {
 				//System.out.println("After mutation: "+nextGen);
 
 			}
-			Output();
+			
+			System.out.println("Coeficients: ");
+			 for(int i = 0; i <= degreeOfPoly; i++) {
+				 
+				System.out.print(bestFitness.getGenes().get(i) + " ");
+			 }
+			 System.out.println("");
+			 System.out.println("It's Fitness: " + bestFitness.getFitness());
+			 
+			Output(fileWriter , bufferedWriter);
 			Clear();
 			
 	 }
@@ -296,34 +305,34 @@ public class curveFitting_sol {
 		
 	 
 	 
-	 public void Output() {
-		 System.out.println("Coeficients: ");
-		 for(int i = 0; i <= degreeOfPoly; i++) {
-			 
-			System.out.print(bestFitness.getGenes().get(i) + " ");
-		 }
-		 System.out.println("");
-		 System.out.println("It's Fitness: " + bestFitness.getFitness());
+	 public void Output(FileWriter fileWriter , BufferedWriter bufferedWriter ) {
+		 
 	 
+		 
+		 
 		 String fileName = "output.txt";
 
 		 try {
+			 /*
 	            // Assume default encoding.
-			 FileWriter fileWriter = new FileWriter(fileName);
+			    fileWriter = new FileWriter(fileName);
 
 	            // Always wrap FileWriter in BufferedWriter.
-			 BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+			  bufferedWriter = new BufferedWriter(fileWriter);
+			  */
 
 	            // Note that write() does not automatically
 	            // append a newline character.
+			 
 			 for(int i = 0; i <= degreeOfPoly; i++) {
-				 bufferedWriter.write(bestFitness.getGenes().get(i) + " " + "\n");
+				 bufferedWriter.append(bestFitness.getGenes().get(i) + " " + "\n");
 	    	 }
 	         bufferedWriter.newLine();
-	         bufferedWriter.write("It's Fitness: " + bestFitness.getFitness());
-
+	         bufferedWriter.append("It's Fitness: " + bestFitness.getFitness() );
+	         bufferedWriter.newLine();
+	         bufferedWriter.newLine();
 	            // Always close files.
-	         bufferedWriter.close();
+	            //closing the file out in the main.
 		 }
 	     catch(IOException ex) {
 	         System.out.println("Error writing to file '" + fileName + "'");
