@@ -8,7 +8,7 @@ public class Main {
 
 		curveFitting_sol sol= new curveFitting_sol();
 		
-		String filepath="C:\\Users\\Soha Samad\\Desktop\\College\\Year 4\\Soft_Computing\\Tasks\\Assignment2-Curve Fitting\\CurveFitting_By_GA\\input.txt";
+		String filepath="wherever your filepath is";
 		sol.readFile(filepath);
 
 		
